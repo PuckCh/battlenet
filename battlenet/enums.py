@@ -14,6 +14,10 @@ RACE = {
     24: 'Pandaren',
     25: 'Pandaren',
     26: 'Pandaren',
+    27: 'Nightborne',
+    28: 'Highmountain Tauren',
+    29: 'Void Elf',
+    30: 'Lightforged Draenei',
 }
 
 CLASS = {
@@ -57,6 +61,10 @@ RACE_TO_FACTION = {
     24: '?',
     25: 'Alliance',
     26: 'Horde',
+    27: 'Horde',
+    28: 'Horde',
+    29: 'Alliance',
+    30: 'Alliance',
 }
 
 EXPANSION = {
