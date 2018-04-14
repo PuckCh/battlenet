@@ -37,8 +37,7 @@ class RaidTest(unittest.TestCase):
 
     def test_order(self):
         expansions = ('wow', 'bc', 'lk', 'cata', 'mop', 'wod', 'legion')
-        keys = battlenet.EXPANSION.keys()
-        keys.sort()
+        keys = sorted(battlenet.EXPANSION.keys())
         for i in range(len(keys)):
             self.assertEqual(battlenet.EXPANSION[i][0], expansions[i])
 

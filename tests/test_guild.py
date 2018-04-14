@@ -4,6 +4,7 @@ import os
 import battlenet
 import datetime
 from battlenet import Guild
+from battlenet.utils import normalize
 
 try:
     import unittest2 as unittest
@@ -36,9 +37,9 @@ class GuildTest(unittest.TestCase):
         self.assertEqual(guild.name, self._guild_name)
         self.assertEqual(str(guild), self._guild_name)
 
-        self.assertEqual(guild.get_realm_name(), self._guild_realm_name.replace("'", ""))
-        self.assertEqual(guild.realm.name, self._guild_realm_name.replace("'", ""))
-        self.assertEqual(str(guild.realm), self._guild_realm_name.replace("'", ""))
+        self.assertEqual(guild.get_realm_name(), normalize(self._guild_realm_name))
+        self.assertEqual(guild.realm.name, normalize(self._guild_realm_name))
+        self.assertEqual(str(guild.realm), normalize(self._guild_realm_name))
 
     def test_len(self):
         guild = Guild(self._guild_region, self._guild_realm_name, self._guild_name, fields=[Guild.MEMBERS])
@@ -59,7 +60,7 @@ class GuildTest(unittest.TestCase):
 
         character = guild.get_leader()
 
-        self.assertRegexpMatches(character.get_full_class_name(), r'^Marksmanship Hunter$')
+        self.assertRegex(character.get_full_class_name(), r'^Marksmanship Hunter$')
 
     def test_achievements(self):
         guild = Guild(self._guild_region, self._guild_realm_name, self._guild_name, fields=[Guild.ACHIEVEMENTS])

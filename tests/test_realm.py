@@ -3,7 +3,7 @@
 import os
 import battlenet
 from battlenet import Realm
-from battlenet.utils import api_key
+from battlenet.utils import api_key, normalize
 
 try:
     import unittest2 as unittest
@@ -31,13 +31,13 @@ class RealmTest(unittest.TestCase):
             locale='en')
 
     def test_realm_by_name(self):
-        name = "Kiljaeden"
+        name = "Kil'jaeden"
 
         realm = self.connection.get_realm(battlenet.UNITED_STATES, name)
-        self.assertEqual(name, realm.name)
+        self.assertEqual(realm.name, normalize(name))
 
         realm = Realm(battlenet.UNITED_STATES, name)
-        self.assertEqual(name, realm.name)
+        self.assertEqual(realm.name, normalize(name))
 
     def test_realm_by_slug(self):
         slug = 'kiljaeden'

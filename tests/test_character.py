@@ -4,6 +4,7 @@ import os
 import battlenet
 import datetime
 from battlenet import Character
+from battlenet.utils import normalize
 
 try:
     import unittest2 as unittest
@@ -56,9 +57,9 @@ class CharacterTest(unittest.TestCase):
         self.assertEqual(character.name, self._character_name)
         self.assertEqual(str(character), self._character_name)
 
-        self.assertEqual(character.get_realm_name(), self._realm_name.replace("'", ""))
-        self.assertEqual(character.realm.name, self._realm_name.replace("'", ""))
-        self.assertEqual(str(character.realm), self._realm_name.replace("'", ""))
+        self.assertEqual(character.get_realm_name(), normalize(self._realm_name))
+        self.assertEqual(character.realm.name, normalize(self._realm_name))
+        self.assertEqual(str(character.realm), normalize(self._realm_name))
 
         self.assertEqual(character.faction, self._faction)
 
@@ -117,7 +118,7 @@ class CharacterTest(unittest.TestCase):
         character = Character(self._region, self._realm_name, self._character_name)
 
         self.assertIsInstance(repr(character), str)
-        self.assertEqual(character.guild.realm.name, self._realm_name.replace("'", ""))
+        self.assertEqual(character.guild.realm.name, normalize(self._realm_name))
 
     def test_unicode(self):
         character = Character(self._region, self._realm_name, self._character_name_unicode)

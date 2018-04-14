@@ -1,13 +1,15 @@
 import logging
-import urllib2
 import base64
 import hmac
 import hashlib
 import time
-import urlparse
+from urllib.parse import urlparse
+from urllib.request import urlopen, Request
+from urllib.error import URLError
 from .things import Character, Realm, Guild, Reward, Perk, Class, Race
 from .exceptions import APIError, CharacterNotFound, GuildNotFound, RealmNotFound
-from .utils import quote, normalize
+from .utils import normalize
+from urllib.parse import quote
 
 try:
     import simplejson as json
@@ -88,7 +90,7 @@ class Connection(object):
         if cache and url in self._cache:
             return self._cache[url]
 
-        uri = urlparse.urlparse(url)
+        uri = urlparse(url)
 
         if self.public_key:
             signature = self.sign_request('GET', date, uri.path, self.private_key)
@@ -96,11 +98,11 @@ class Connection(object):
 
         logger.debug('Battle.net => ' + url)
 
-        request = urllib2.Request(url, None, headers)
+        request = Request(url, None, headers)
 
         try:
-            response = urllib2.urlopen(request)
-        except urllib2.URLError, e:
+            response = urlopen(request)
+        except URLError as e:
             raise APIError(str(e))
 
         try:
