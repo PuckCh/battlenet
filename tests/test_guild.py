@@ -50,7 +50,7 @@ class GuildTest(unittest.TestCase):
 
         character = guild.get_leader()
 
-        self.assertEqual(character.name, 'Ralsu')
+        self.assertEqual(character.name, 'Lavosheppe')
 
     def test_lazyload_member_character(self):
         guild = Guild(self._guild_region, self._guild_realm_name, self._guild_name)
@@ -59,7 +59,7 @@ class GuildTest(unittest.TestCase):
 
         character = guild.get_leader()
 
-        self.assertRegexpMatches(character.get_full_class_name(), r'^Outlaw Rogue$')
+        self.assertRegexpMatches(character.get_full_class_name(), r'^Marksmanship Hunter$')
 
     def test_achievements(self):
         guild = Guild(self._guild_region, self._guild_realm_name, self._guild_name, fields=[Guild.ACHIEVEMENTS])
