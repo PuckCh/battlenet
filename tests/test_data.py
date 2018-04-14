@@ -35,6 +35,10 @@ class DataTest(unittest.TestCase):
             24: u'Pandaren',
             25: u'Pandaren',
             26: u'Pandaren',
+            27: 'Nightborne',
+            28: 'Highmountain Tauren',
+            29: 'Void Elf',
+            30: 'Lightforged Draenei',
         }, dict([(race.id, race.name) for race in races]))
 
         for race in races:
