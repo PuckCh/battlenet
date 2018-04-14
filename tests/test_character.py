@@ -149,12 +149,12 @@ class CharacterTest(unittest.TestCase):
 
     def test_talents(self):
         character = Character(self._region, self._realm_name, self._character_name, fields=[Character.TALENTS])
-        self.assertEqual(len(character.talents), 4)
+        self.assertEqual(len(character.talents), 9)
 
     def test_talents_worldwide(self):
         for region, realm, character_name in self._characters:
             character = Character(region, realm, character_name, fields=[Character.TALENTS])
-            self.assertEqual(len(character.talents), 4)
+            self.assertEqual(len(character.talents), 9)
 
     def test_characters_worldwide(self):
         for region, realm, character_name in self._characters:
