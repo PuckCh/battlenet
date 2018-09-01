@@ -18,6 +18,8 @@ RACE = {
     28: 'Highmountain Tauren',
     29: 'Void Elf',
     30: 'Lightforged Draenei',
+    34: 'Dark Iron Dwarf',
+    36: "Mag'har Orc"
 }
 
 CLASS = {
@@ -65,6 +67,8 @@ RACE_TO_FACTION = {
     28: 'Horde',
     29: 'Alliance',
     30: 'Alliance',
+    34: 'Alliance',
+    36: 'Horde'
 }
 
 EXPANSION = {
