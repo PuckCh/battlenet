@@ -106,7 +106,7 @@ class Connection(object):
             raise APIError(str(e))
 
         try:
-            data = json.loads(response.read())
+            data = json.loads(response.read().decode('utf-8'))
         except json.JSONDecodeError:
             raise APIError('Non-JSON Response')
         else:
