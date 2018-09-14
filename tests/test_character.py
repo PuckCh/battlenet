@@ -19,32 +19,43 @@ battlenet.Connection.setup(public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
 
 class CharacterTest(unittest.TestCase):
 
-    _character_name = 'Sejta'
+    _character_name = 'Scobomb'
     _region = battlenet.EUROPE
-    _realm_name = "Lightning's Blade"
-    _guild_name = 'Paragon'
+    _realm_name = 'Tarren Mill'
+    _guild_name = 'Method'
     _faction = Character.HORDE
     _race = Character.TAUREN
     _class = Character.DRUID
-    _level = 90
-    _gender = Character.MALE
-    _professions = (Character.LEATHERWORKING, Character.BLACKSMITHING)
-    _professions_secondary = (Character.ARCHAEOLOGY, Character.COOKING, Character.FIRST_AID, Character.FISHING)
-    _appearance_face = 1
-    _appearance_feature = 6
-    _appearance_hair_color = 1
-    _appearance_show_cloak = False
+    _level = 120
+    _gender = Character.FEMALE
+    _professions = (
+         Character.MINING,
+         Character.HERBALISM,
+        'Legion ' + Character.MINING,
+        'Legion ' + Character.HERBALISM,
+    )
+    _professions_secondary = (
+        Character.ARCHAEOLOGY,
+        Character.COOKING,
+        Character.FISHING,
+        'Draenor ' + Character.COOKING,
+        'Legion ' + Character.COOKING,
+    )
+    _appearance_face = 2
+    _appearance_feature = 3
+    _appearance_hair_color = 0
+    _appearance_show_cloak = True
     _appearance_show_helm = True
-    _appearance_hair = 10
+    _appearance_hair = 3
 
-    _character_name_unicode = 'Luný'
-    _character_name_hunter = 'Devai'
+    _character_name_unicode = 'Knüppler'
+    _character_name_hunter = 'Rogerbrown'
     _pet_name = 'DEVAJR'
 
     _characters = (
         (battlenet.UNITED_STATES, 'illidan', 'Zonker'),
         (battlenet.UNITED_STATES, 'Mannoroth', 'Doubleagent'),
-        (battlenet.EUROPE, "Lightning's Blade", 'Sejta'),
+        (battlenet.EUROPE, 'Tarren Mill', 'Scobomb'),
         (battlenet.KOREA, '헬스크림', '천우회'),
         (battlenet.TAIWAN, '水晶之刺', '憂郁的風'),
         ## china api is not available now
@@ -135,18 +146,25 @@ class CharacterTest(unittest.TestCase):
     def test_achievements(self):
         character = Character(self._region, self._realm_name, self._character_name, fields=[Character.ACHIEVEMENTS])
 
-        self.assertEqual(character.achievements[513], datetime.datetime(2008, 10, 15, 15, 56, 0))
+        self.assertEqual(character.achievements[513], datetime.datetime(2008, 10, 15, 17, 13, 0))
 
     def test_progression(self):
         character = Character(self._region, self._realm_name, self._character_name, fields=[Character.PROGRESSION])
 
         for instance in character.progression['raids']:
-            if instance.name == 'Blackwing Descent':
+            if instance.name == 'Antorus, the Burning Throne':
                 self.assertTrue(instance.is_complete('normal'))
 
                 for boss in instance.bosses:
-                    if boss.name == 'Nefarian':
+                    if boss.name == 'Argus the Unmaker':
                         self.assertGreater(boss.normal, 0)
+                        break
+                else:
+                    self.fail('Boss not found')
+
+                break
+        else:
+            self.fail('Raid instance not found')
 
     def test_talents(self):
         character = Character(self._region, self._realm_name, self._character_name, fields=[Character.TALENTS])
