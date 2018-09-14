@@ -809,10 +809,8 @@ class Reward(Thing):
 
 
 class Realm(Thing):
-    PVP = 'pvp'
-    PVE = 'pve'
-    RP = 'rp'
-    RPPVP = 'rppvp'
+    NORMAL = 'normal'
+    RP = 'roleplaying'
 
     HIGH = 'high'
     MEDIUM = 'medium'
@@ -868,19 +866,11 @@ class EquippedItem(Thing):
         self.name = data['name']
         self.quality = data['quality']
         self.itemLevel = data['itemLevel']
-        self.upgradable = 'upgrade' in data['tooltipParams']
-        if self.upgradable:
-            self.upgrade = data['tooltipParams']['upgrade']
         self.icon = data['icon']
 
-        self.random_enchant = data['tooltipParams'].get('suffix')
-        self.reforge = data['tooltipParams'].get('reforge')
-        self.set = data['tooltipParams'].get('set')
         self.enchant = data['tooltipParams'].get('enchant')
-        self.extra_socket = data['tooltipParams'].get('extraSocket', False)
 
         self.gems = collections.defaultdict(lambda: None)
-
         for key, value in data['tooltipParams'].items():
             if key.startswith('gem'):
                 self.gems[int(key[3:])] = value
@@ -889,6 +879,12 @@ class EquippedItem(Thing):
         self.artifactAppearanceId = data['artifactAppearanceId']
         self.artifactTraits = data['artifactTraits']
         self.relics = data['relics']
+
+        self.azeriteLevel = ('azeriteItem' in data and data['azeriteItem']['azeriteLevel']) or 0
+        self.azeriteEmpoweredItem = []
+        if 'azeriteEmpoweredItem' in data:
+            for azerite_info in data['azeriteEmpoweredItem']['azeritePowers']:
+                self.azeriteEmpoweredItem.append(azerite_info)
 
     def __str__(self):
         return self.name
