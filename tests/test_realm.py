@@ -82,7 +82,7 @@ class RealmTest(unittest.TestCase):
     def test_realm_type(self):
         realm = self.connection.get_realm(battlenet.UNITED_STATES, 'Nazjatar')
 
-        self.assertEqual(realm.type, Realm.PVP)
+        self.assertEqual(realm.type, Realm.NORMAL)
 
     def test_realm_population(self):
         realm = self.connection.get_realm(battlenet.UNITED_STATES, 'Nazjatar')
