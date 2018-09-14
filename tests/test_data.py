@@ -39,6 +39,8 @@ class DataTest(unittest.TestCase):
             28: 'Highmountain Tauren',
             29: 'Void Elf',
             30: 'Lightforged Draenei',
+            34: 'Dark Iron Dwarf',
+            36: "Mag'har Orc",
         }, dict([(race.id, race.name) for race in races]))
 
         for race in races:
