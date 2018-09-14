@@ -79,6 +79,7 @@ EXPANSION = {
     4: ('mop', 'Mists of Pandaria'),
     5: ('wod', 'Warlords of Draenor'),
     6: ('legion', 'Legion'),
+    7: ('bfa', 'Battle for Azeroth'),
 }
 
 RAIDS = {
@@ -89,4 +90,5 @@ RAIDS = {
     'mop': (6125, 6297, 6067, 6622, 6738),
     'wod': (6996, 6967, 7545),
     'legion': (8026, 8440, 8025, 8524, 8638),
+    'bfa': (9389,),
 }
