@@ -1,7 +1,11 @@
 import os
 
-def api_key():
-    return os.environ.get('BNET_API_KEY')
+def client_id():
+    return os.environ.get('BNET_CLIENT_ID')
+
+
+def client_secret():
+    return os.environ.get('BNET_CLIENT_SECRET')
 
 
 def normalize(name):
@@ -25,4 +29,4 @@ def make_connection():
         from .connection import Connection
         make_connection.Connection = Connection
 
-    return make_connection.Connection(api_key=api_key())
+    return make_connection.Connection(client_id=client_id(), client_secret=client_secret())

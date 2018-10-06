@@ -3,13 +3,13 @@ import base64
 import hmac
 import hashlib
 import time
-from urllib.parse import urlparse
-from urllib.request import urlopen, Request
-from urllib.error import URLError
 from .things import Character, Realm, Guild, Reward, Perk, Class, Race
 from .exceptions import APIError, CharacterNotFound, GuildNotFound, RealmNotFound
 from .utils import normalize
 from urllib.parse import quote
+import requests
+from oauthlib.oauth2 import BackendApplicationClient
+from requests_oauthlib import OAuth2Session
 
 try:
     import simplejson as json
@@ -19,7 +19,8 @@ except ImportError:
 
 __all__ = ['Connection']
 
-URL_FORMAT = 'https://%(region)s.api.battle.net/%(game)s%(path)s?apikey=%(apikey)s&%(params)s'
+URL_FORMAT = 'https://{region:s}.api.blizzard.com/{game:s}{path:s}'
+BNET_TOKEN_URL = 'https://{region:s}.battle.net/oauth/token'
 
 logging.basicConfig()
 logger = logging.getLogger('battlenet')
@@ -32,20 +33,19 @@ MONTHS = ('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
 
 class Connection(object):
     defaults = {
-        'api_key': '',
-        'public_key': None,
-        'private_key': None,
+        'client_id': '',
+        'client_secret': '',
         'locale': 'en_US'
     }
 
-    def __init__(self, api_key='', public_key=None, private_key=None, game='wow', locale=None):
-        self.api_key = api_key or Connection.defaults.get('api_key')
-        self.public_key = public_key or Connection.defaults.get('public_key')
-        self.private_key = private_key or Connection.defaults.get('private_key')
+    def __init__(self, client_id='', client_secret='', game='wow', locale=None):
+        self.client_id = client_id or Connection.defaults.get('client_id')
+        self.client_secret = client_secret or Connection.defaults.get('client_secret')
         self.game = game
         self.locale = locale or Connection.defaults.get('locale')
 
         self._cache = {}
+        self._clients = {}
 
     def __eq__(self, other):
         if not isinstance(other, Connection):
@@ -77,41 +77,46 @@ class Connection(object):
             'Date': date
         }
 
-        url = URL_FORMAT % {
-            'region': region,
-            'game': self.game,
-            'path': path,
-            'apikey': self.api_key,
-            'params': '&'.join('='.join(
-                (k, ','.join(v) if isinstance(v, (set, list)) else v))
-                for k, v in params.items() if v)
-        }
+        url = URL_FORMAT.format(
+            region=region,
+            game=self.game,
+            path=path,
+        )
 
         if cache and url in self._cache:
             return self._cache[url]
 
-        uri = urlparse(url)
+        if region not in self._clients:
+            bnet_client = {
+                    'client_id': self.client_id,
+                    'client_secret': self.client_secret,
+            }
+            scope = ['wow.profile']
+            bnet_token_url = BNET_TOKEN_URL.format(region=region)
 
-        if self.public_key:
-            signature = self.sign_request('GET', date, uri.path, self.private_key)
-            headers['Authorization'] = 'BNET %s:%s' % (self.public_key, signature)
+            self._clients[region] = OAuth2Session(
+                    client=BackendApplicationClient(client_id=self.client_id, scope=scope),
+                    auto_refresh_url=bnet_token_url,
+                    auto_refresh_kwargs=bnet_client)
+            self._clients[region].fetch_token(
+                    token_url=bnet_token_url,
+                    client_id=self.client_id,
+                    client_secret=self.client_secret)
 
-        logger.debug('Battle.net => ' + url)
-
-        request = Request(url, None, headers)
-
+        payload = {}
+        for k, v in params.items():
+            if v:
+                payload[k] = v
+        r = self._clients[region].get(url, params=payload)
         try:
-            response = urlopen(request)
-        except URLError as e:
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
             raise APIError(str(e))
 
         try:
-            data = json.loads(response.read().decode('utf-8'))
-        except json.JSONDecodeError:
+            data = r.json()
+        except ValueError:
             raise APIError('Non-JSON Response')
-        else:
-            if data.get('status') == 'nok':
-                raise APIError(data['reason'])
 
         if cache:
             self._cache[url] = data

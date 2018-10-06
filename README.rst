@@ -10,7 +10,7 @@ Major features
 * Unicode normalization
 * Lazyloading and eagerloading
 * Support locales (en, fr, de, ...)
-* Support api/public/private keys
+* Support client_id/client_secret OAuth2 login
 
 Making a connection
 ----------------------
@@ -22,9 +22,8 @@ Global connection settings can be setup so that objects can make connections imp
     from battlenet import Connection
 
     Connection.setup(
-        api_key='your api key',
-        public_key='your public key',
-        private_key='your private key',
+        client_id='your client id',
+        client_secret='your client secret',
         locale='fr')
 
 You can also create connections explicitly.
@@ -34,21 +33,22 @@ You can also create connections explicitly.
     from battlenet import Connection
 
     connection = Connection(
-        api_key='your api key',
-        public_key='your public key',
-        private_key='your private key',
+        client_id='your client id',
+        client_secret='your client secret',
         locale='fr')
 
-Using the api/public/private keys
-----------------------------------
+Using the api
+-------------
 
-You can define your keys via environment variables. For example using a bash shell:
+You can define your client_id/client_secret via environment variables. For
+example using a bash shell:
 
 ::
 
-    $ export BNET_API_KEY=put-your-api-key-here
+    $ export BNET_CLIENT_ID=your-client-id-here
+    $ export BNET_CLIENT_SECRET=your-client-secret-here
 
-More details on the keys on the official battle.net dev website https://dev.battle.net/.
+More details on the official Blizzard Battle.net Developer Portal https://develop.battle.net/.
 
 Fetching a specific realm
 -------------------------
