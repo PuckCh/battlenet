@@ -7,12 +7,6 @@ import datetime
 from battlenet import Character
 from battlenet import Raid
 
-PUBLIC_KEY = os.environ.get('BNET_PUBLIC_KEY')
-PRIVATE_KEY = os.environ.get('BNET_PRIVATE_KEY')
-
-battlenet.Connection.setup(public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
-
-
 class RaidTest(unittest.TestCase):
 
     _character_name = 'Sejta'
@@ -23,7 +17,8 @@ class RaidTest(unittest.TestCase):
         (battlenet.UNITED_STATES, 'illidan', 'Zonker'),
         (battlenet.EUROPE, "Lightning's Blade", 'Sejta'),
         (battlenet.KOREA, '헬스크림', '천우회'),
-        (battlenet.TAIWAN, '水晶之刺', '憂郁的風'),
+        ## new taiwan api is not available now
+        ##(battlenet.TAIWAN, '水晶之刺', '憂郁的風'),
         ## china api is not available now
         ##(battlenet.CHINA, '灰谷', '小蠬蝦'),
     )

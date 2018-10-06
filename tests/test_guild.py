@@ -11,12 +11,6 @@ try:
 except ImportError:
     import unittest as unittest
     
-PUBLIC_KEY = os.environ.get('BNET_PUBLIC_KEY')
-PRIVATE_KEY = os.environ.get('BNET_PRIVATE_KEY')
-
-battlenet.Connection.setup(public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
-
-
 class GuildTest(unittest.TestCase):
     _guild_region = battlenet.EUROPE
     _guild_realm_name = "Lightning's Blade"
@@ -27,7 +21,9 @@ class GuildTest(unittest.TestCase):
         (battlenet.EUROPE, "Lightning's Blade", 'Paragon'),
         (battlenet.KOREA, 'Azshara', 'AFK R'),   # realm in english...
         (battlenet.KOREA, '아즈샤라', 'AFK R'),  # same realm in kr
-        (battlenet.TAIWAN, '水晶之刺', 'Stars'),
+        ## new taiwan api is not available now
+        ##(battlenet.TAIWAN, '水晶之刺', 'Stars'),
+        ## china api is not available now
         ##(battlenet.CHINA, '灰谷', '星之轨迹'),
     )
 

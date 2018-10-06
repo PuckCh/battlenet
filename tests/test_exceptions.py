@@ -1,18 +1,16 @@
 import os
 import battlenet
-from battlenet.utils import api_key
+from battlenet.utils import client_id
+from battlenet.utils import client_secret
 
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest as unittest
 
-PUBLIC_KEY = os.environ.get('BNET_PUBLIC_KEY')
-PRIVATE_KEY = os.environ.get('BNET_PRIVATE_KEY')
-
 class ExceptionTest(unittest.TestCase):
     def setUp(self):
-        self.connection = battlenet.Connection(api_key=api_key(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
+        self.connection = battlenet.Connection(client_id=client_id(), client_secret=client_secret())
 
     def test_character_not_found(self):
         self.assertRaises(battlenet.CharacterNotFound,

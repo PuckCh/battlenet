@@ -11,12 +11,6 @@ try:
 except ImportError:
     import unittest as unittest
 
-PUBLIC_KEY = os.environ.get('BNET_PUBLIC_KEY')
-PRIVATE_KEY = os.environ.get('BNET_PRIVATE_KEY')
-
-battlenet.Connection.setup(public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
-
-
 class CharacterTest(unittest.TestCase):
 
     _character_name = 'Scobomb'
@@ -57,7 +51,8 @@ class CharacterTest(unittest.TestCase):
         (battlenet.UNITED_STATES, 'Mannoroth', 'Doubleagent'),
         (battlenet.EUROPE, 'Tarren Mill', 'Scobomb'),
         (battlenet.KOREA, '헬스크림', '천우회'),
-        (battlenet.TAIWAN, '水晶之刺', '憂郁的風'),
+        ## new taiwan api is not available now
+        ##(battlenet.TAIWAN, '水晶之刺', '憂郁的風'),
         ## china api is not available now
         ##(battlenet.CHINA, '灰谷', '小蠬蝦'),
     )
