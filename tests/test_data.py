@@ -17,6 +17,10 @@ class DataTest(unittest.TestCase):
         races = self.connection.get_character_races(battlenet.UNITED_STATES)
 
         self.assertEqual(battlenet.RACE, dict([(race.id, race.name) for race in races]))
+        self.assertEqual(
+                dict([(k, v.lower().replace('?', 'neutral'))
+                    for k, v in battlenet.RACE_TO_FACTION.items()]),
+                dict([(race.id, race.side) for race in races]))
 
         for race in races:
             self.assertIn(race.side, ['alliance', 'horde', 'neutral'])
