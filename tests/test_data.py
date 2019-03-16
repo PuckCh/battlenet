@@ -16,29 +16,7 @@ class DataTest(unittest.TestCase):
     def test_races(self):
         races = self.connection.get_character_races(battlenet.UNITED_STATES)
 
-        self.assertEqual({
-            1: u'Human',
-            2: u'Orc',
-            3: u'Dwarf',
-            4: u'Night Elf',
-            5: u'Undead',
-            6: u'Tauren',
-            7: u'Gnome',
-            8: u'Troll',
-            9: u'Goblin',
-            10: u'Blood Elf',
-            11: u'Draenei',
-            22: u'Worgen',
-            24: u'Pandaren',
-            25: u'Pandaren',
-            26: u'Pandaren',
-            27: 'Nightborne',
-            28: 'Highmountain Tauren',
-            29: 'Void Elf',
-            30: 'Lightforged Draenei',
-            34: 'Dark Iron Dwarf',
-            36: "Mag'har Orc",
-        }, dict([(race.id, race.name) for race in races]))
+        self.assertEqual(battlenet.RACE, dict([(race.id, race.name) for race in races]))
 
         for race in races:
             self.assertIn(race.side, ['alliance', 'horde', 'neutral'])
