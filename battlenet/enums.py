@@ -69,6 +69,8 @@ RACE_TO_FACTION = {
     28: 'Horde',
     29: 'Alliance',
     30: 'Alliance',
+    31: 'Horde',
+    32: 'Alliance',
     34: 'Alliance',
     36: 'Horde'
 }
