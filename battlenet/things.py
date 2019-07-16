@@ -126,9 +126,10 @@ class Character(LazyThing):
     HUNTER_PETS = 'hunterPets'
     PROGRESSION = 'progression'
     ACHIEVEMENTS = 'achievements'
+    STATISTICS = 'statistics'
     ALL_FIELDS = [STATS, TALENTS, ITEMS, REPUTATIONS, TITLES, PROFESSIONS,
                   APPEARANCE, COMPANIONS, MOUNTS, GUILD, QUESTS, HUNTER_PETS,
-                  PROGRESSION, ACHIEVEMENTS]
+                  PROGRESSION, ACHIEVEMENTS, STATISTICS]
 
     def __init__(self, region, realm=None, name=None, data=None, fields=None, connection=None):
         super(Character, self).__init__(data, fields)
@@ -293,6 +294,13 @@ class Character(LazyThing):
                 self._achievements[id_] = datetime.datetime.fromtimestamp(timestamp / 1000)
 
         return self._achievements
+
+    @property
+    def statistics(self):
+        if self._refresh_if_not_present(Character.STATISTICS):
+            self._statistics = self._data[Character.STATISTICS]
+
+        return self._statistics
 
     def refresh(self, *fields):
         for field in fields:
